@@ -12,19 +12,36 @@
   <link href="css/bootstrap.css" rel="stylesheet">
 
   <!-- Add custom CSS here -->
-  <style>
-    body {margin-top: 60px;}
-  </style>
+  <link href="css/styles.css" rel="stylesheet">
 
 </head>
 
 <body>
-  <div class="container">
+  <div id="displayArea" class="container">
     <!-- This is where the following templates will be used -->
   </div>
 
-  <script id="typingBattleHomeScreen" type="text/template">
-    
+  <script id="h" type="text/template">
+    <div class="page-header text-center">
+      <h1>TypeRace</h1>
+    </div>
+    <div class="text-center">
+      <button id="btnCreateGame" type="button" class="btn btn-primary btn-lg">Challenge a Friend</button>
+      <button id="btnJoinGame" type="button" class="btn btn-primary btn-lg">Join a Friend</button>
+    </div>
+  </script>
+
+  <script id="homeScreen" type="text/template">
+    <div class="page-header text-center">
+      <h1>Join a Game</h1>
+    </div>
+    <div>
+      <div class="col-xs-2">
+        <label class="control-label">Game ID</label>
+        <input id="inptJoinGame" type="gameId" class="form-control">
+      </div>
+      <button id="btnJoinGame" type="button" class="btn btn-primary btn-lg">Race!</button>
+    </div>
   </script>
 
 

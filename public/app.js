@@ -53,11 +53,6 @@ jQuery(function($){
         gameId: 0,
 
         /**
-         * This is used to differentiate between 'Host' and 'Player' browsers.
-         */
-        myRole: '',   // 'Player' or 'Host'
-
-        /**
          * The Socket.IO socket object identifier. This is unique for
          * each player and host. It is generated when the browser initially
          * connects to the server when the page loads for the first time.
@@ -71,18 +66,38 @@ jQuery(function($){
         /**
          * This runs when the page initially loads.
          */
-        init: function () {
+        init: function() {
             App.bindEvents();
+            App.cacheElements();
+            App.displayHomeScreen();
         },
 
         /**
          * Create some click handlers for the various buttons that appear on-screen.
          */
-        bindEvents: function () {
+        bindEvents: function() {
             $('#btnCreateGame').click(App.onCreateClick);
             $('#btnJoinGame').click(App.onPlayerJoinClick);
             $('#btnSubmitText').click(App.onPlayerSubmitText);
         },
+
+        /**
+         * Cache DOM elements
+         */
+        cacheElements: function() {
+            // Cache templates
+            App.$displayArea = $("#displayArea");
+            App.$homeScreen = $("#homeScreen").html();
+        },
+
+        /**
+         * Default to showing the home screen for the incoming visitor
+         */
+        displayHomeScreen: function() {
+            App.$displayArea.html(App.$homeScreen);
+        },
+
+        // GameRoom: {
 
         /**
          * Handler for the "Start" button on the Title Screen.
