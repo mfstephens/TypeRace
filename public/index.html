@@ -1,63 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
 
-    <title>Starter Template for Bootstrap</title>
+  <title>Starter Template for Bootstrap</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.css" rel="stylesheet">
+  <!-- Bootstrap core CSS -->
+  <link href="css/bootstrap.css" rel="stylesheet">
 
-    <!-- Add custom CSS here -->
-    <style>
-	body {margin-top: 60px;}
-    </style>
+  <!-- Add custom CSS here -->
+  <style>
+    body {margin-top: 60px;}
+  </style>
 
-  </head>
+</head>
 
-  <body>
+<body>
+  <div class="container">
+    <!-- This is where the following templates will be used -->
+  </div>
 
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="index.php">Start Bootstrap</a>
-        </div>
+  <script id="typingBattleHomeScreen" type="text/template">
+    
+  </script>
 
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse navbar-ex1-collapse">
-          <ul class="nav navbar-nav">
-            <li><a href="#about">About</a></li>
-            <li><a href="#services">Services</a></li>
-            <li><a href="#contact">Contact</a></li>
-          </ul>
-        </div><!-- /.navbar-collapse -->
-      </div><!-- /.container -->
-    </nav>
 
-    <div class="container">
-
-      <div class="row">
-        <div class="col-lg-12">
-          <h1>A better Bootstrap starter template.</h1>
-          <p>Complete with pre-defined file paths that you won't have to change!</p>
+<!--     <div class="row">
+      <div class="col-lg-12">
+        <h1>A better Bootstrap starter template.</h1>
+        <p>Complete with pre-defined file paths that you won't have to change!</p>
+        <button id="btnCreateGame" type="button" class="btn btn-primary">Challenge a Friend</button>
+        <input id="inptJoinGame" type="gameId" class="form-control"></input>ID
+        <input id="inptPlayerName" type="gameId" class="form-control"></input>Name
+        <button id="btnJoinGame" type="button" class="btn btn-primary">Join a Friend</button>
+        <textarea id="chatInputWindow" name="term" id="term" cols="40" rows="4"></textarea>
+        <button id="btnSubmitText" type="button" class="btn btn-primary">Submit Text</button>
+        <div id="chatOutputWindow">
+          <p>Chat will appear here</p>
         </div>
       </div>
+    </div> -->
 
-    </div><!-- /.container -->
+  <!-- JavaScript -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="js/jquery-1.10.2.js"></script>
+  <script src="js/bootstrap.js"></script>
+  <script src="app.js"></script>
 
-    <!-- JavaScript -->
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="js/jquery-1.10.2.js"></script>
-    <script src="js/bootstrap.js"></script>
-
-  </body>
+</body>
 </html>
