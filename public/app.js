@@ -88,6 +88,8 @@ jQuery(function($){
             // Cache templates
             App.$displayArea = $("#displayArea");
             App.$homeScreen = $("#homeScreen").html();
+            App.$enterIdScreen = $("#enterIdScreen").html();
+            App.$mainGameScreen = $("#mainGameScreen").html();
         },
 
         /**
