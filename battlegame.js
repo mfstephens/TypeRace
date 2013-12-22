@@ -15,7 +15,7 @@ var player2Name = '';
 exports.initGame = function(sio, socket){
     io = sio;
     gameSocket = socket;
-    gameSocket.emit('connected', { message: "You are connected!" });
+    gameSocket.emit('playerConnected');
 
     // Player Events
     gameSocket.on('joinNewGame', joinNewGame);
@@ -24,7 +24,7 @@ exports.initGame = function(sio, socket){
 };
 
 /*
- * A player is creating a new game with a unique room ID
+ * A player is creating and joining a new game with a unique roomId.
  */
 function joinNewGame(name) {
     // Save player name to the server.
@@ -32,15 +32,16 @@ function joinNewGame(name) {
 
     // Create a unique Socket.IO Room.
     var thisGameId = ( Math.random() * 100000 ) | 0;
+    console.log('Player ' + name + ' creating room: ' + thisGameId);
 
     // Join the room.
     this.join(thisGameId.toString());
+    console.log('Player ' + this.id + ' joining game: ' + thisGameId);
 
     // Return the Room ID (gameId) and the socket ID (mySocketId) to the browser client
-    this.emit('playerJoinedRoom', {
+    this.emit('playerCreatedNewRoom', {
         gameId: thisGameId,
-        mySocketId: this.id,
-        playerNumber: 1
+        mySocketId: this.id
     });
 };
 
@@ -51,22 +52,21 @@ function playerJoinGame(data) {
     // A reference to the player's Socket.IO socket object
     var sock = this;
 
-    console.log('Player ' + data.playerName + ' joining game: ' + data.gameId );
-
     // Look up the room ID in the Socket.IO manager object.
     var room = gameSocket.manager.rooms["/" + data.gameId];
 
     // If the room exists...
     if( room != undefined ){
-        // attach the socket id to the data object.
+        // Attach the socket id to the data object.
         data.mySocketId = sock.id;
 
-        // attach the typing test, since the game is about to start
+        // Attach the typing test to the data object.
         typingTest = createTypingTest();
         data.typingTest = typingTest;
 
         // Join the room
         sock.join(data.gameId);
+        console.log('Player ' + data.mySocketId + ' joining game: ' + room);
 
         // Attach player names to data object.
         data.player1Name = player1Name;
@@ -78,7 +78,7 @@ function playerJoinGame(data) {
     }
     else {
         // Otherwise, send an error message back to the player.
-        this.emit('error',{message: "This room does not exist."} );
+        this.emit('error', {message: "This room does not exist."});
     }
 };
 
@@ -103,7 +103,6 @@ function playerSubmittedAnswer(data) {
 
 function createTypingTest() {
     var m = wordPool.length, t, i;
-
 
     // Shuffle array to create a unique test
     while(m) {

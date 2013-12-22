@@ -17,8 +17,8 @@ jQuery(function($){
          * by the Socket.IO server, then run the appropriate function.
          */
         bindEvents : function() {
-            IO.socket.on('connected', IO.onConnected);
-            IO.socket.on('newGameCreated', IO.onNewGameCreated);
+            IO.socket.on('playerConnected', IO.onPlayerConnected);
+            IO.socket.on('playerCreatedNewRoom', IO.onPlayerCreatedNewRoom);
             IO.socket.on('playerJoinedRoom', IO.onPlayerJoinedRoom);
             IO.socket.on('playerAnsweredCorrectly', IO.onPlayerAnsweredCorrectly);
             IO.socket.on('playerAnsweredIncorrectly', IO.onPlayerAnsweredIncorrectly);
@@ -27,9 +27,16 @@ jQuery(function($){
         /**
          * The client is successfully connected!
          */
-        onConnected : function() {
+        onPlayerConnected : function() {
             // Cache a copy of the client's socket.IO session ID on the App
             App.mySocketId = IO.socket.socket.sessionid;
+        },
+
+        /**
+         * Player has created a new room.
+         */
+        onPlayerCreatedNewRoom: function(data) {
+            App.Player.onPlayerCreatedNewRoom(data);
         },
 
         /**
@@ -70,12 +77,6 @@ jQuery(function($){
          * Player's name. Default is Anonymous.
          */
         myName: 'Anonymous',
-
-        /**
-         * Player number indicates which player is which. 
-         * Host is player1, guest is player2.
-         */
-        playerNumber: 0,
 
         /**
          * Variable to keep track of which word 
@@ -121,7 +122,7 @@ jQuery(function($){
             App.$doc.on('click', '#btnSubmitId', App.Player.onPlayerSubmitIdClick);
 
             // Typing test handlers
-            App.$doc.on('keyup', '#playerInput', function(e) {
+            App.$doc.on('keypress', '#playerInput', function(e) {
                 // Check if keypress was the spacebar
                 if(e.keyCode === 32) {
                     App.Player.onSpacebarPress();
@@ -169,8 +170,8 @@ jQuery(function($){
         displayMainGameScreen: function(data) {
             App.$displayArea.html(App.$mainGameScreen);
             $(".game-text").html(data.typingTest);
-            $("#player1Name").text(data.player1Name);
-            $("#player2Name").text(data.player2Name);
+            // $("#player1Name").text(data.player1Name);
+            // $("#player2Name").text(data.player2Name);
         },
 
         /* *************************************
@@ -194,38 +195,39 @@ jQuery(function($){
             onPlayerSubmitIdClick: function() {
                 // Assign gameId.
                 App.gameId = +($("#inputSubmitId").val());
-                App.playerNumber = 2;
 
                 // Prepare data object for server.
                 var data = {
                     gameId: App.gameId,
-                    name: App.myName,
-                    playerNumber: App.playerNumber
+                    name: App.myName
                 };
 
                 // Emit that player joined a room.
                 IO.socket.emit('playerJoinGame', data);
             },
 
+            onPlayerCreatedNewRoom: function(data) {
+                App.gameId = data.gameId;
+                App.mySocketId = data.mySocketId;
+                App.displayWaitingScreen();
+            },
+
             onPlayerJoinedRoom: function(data) {
-                // display waiting screen
-                if( data.playerNumber === 1 ) {
-                    App.gameId = data.gameId;
+                if(App.mySocketId === '') {
                     App.mySocketId = data.mySocketId;
-                    App.displayWaitingScreen();
                 }
-                else {
-                    App.displayMainGameScreen(data);
-                }
-                $('#' + App.currentWord).css("background-color", "gray");
+                App.gameId = data.gameId;
+                App.displayMainGameScreen(data);
+                $('#player1GameText .word-' + App.currentWord).css("background-color", "#dddddd");
             },
 
             onSpacebarPress: function() {
+                var input = $.trim($('#playerInput').val());
                 // Prepare a data object to send to the server for checking        
                 var data = {
                     gameId: App.gameId,
                     mySocketId: App.mySocketId,
-                    input: $.trim($('#playerInput').val()),
+                    input: input,
                     currentWord: App.currentWord
                 }
 
@@ -242,25 +244,25 @@ jQuery(function($){
             updateMainGameScreen: function(data) {
                 if(data.mySocketId === App.mySocketId) {
                     if(data.correct) {
-                        $('#player1GameText .word-' + App.currentWord).css("color", "green");
+                        $('#player1GameText .word-' + data.currentWord).css("color", "green");
 
                     }
                     else {
-                        $('#player1GameText .word-' + App.currentWord).css("color", "red");
+                        $('#player1GameText .word-' + data.currentWord).css("color", "red");
                     }
-                    $('#' + App.currentWord).css("background-color", "white");
+                    $('#player1GameText .word-' + App.currentWord).css("background-color", "transparent");
                     // Update current word and remove all input in field.
                     App.currentWord++;
                     $('#playerInput').val('');
-                    $('#' + App.currentWord).css("background-color", "gray");
+                    $('#player1GameText .word-' + App.currentWord).css("background-color", "#dddddd");
                 }
                 else {
                     if(data.correct) {
-                        $('#player2GameText .word-' + App.currentWord).css("color", "green");
+                        $('#player2GameText .word-' + data.currentWord).css("color", "green");
 
                     }
                     else {
-                        $('#player2GameText .word-' + App.currentWord).css("color", "red");
+                        $('#player2GameText .word-' + data.currentWord).css("color", "red");
                     }
                 }
             }
