@@ -29,6 +29,18 @@
 
   <script id="homeScreen" type="text/template">
     <div class="col-md-4 col-md-offset-4">
+      <div class="navbar-form" role="EnterID">
+        <h5>Enter your name</h5>
+        <div class="form-group">
+          <input id="inputEnterName" type="text" class="form-control input-lg" placeholder="Enter Name">
+        </div>
+        <button id="btnSubmitName" class="btn btn-success btn-lg">Next</button>
+      </div>
+    </div>
+  </script>
+
+  <script id="chooseGameScreen" type="text/template">
+    <div class="col-md-4 col-md-offset-4">
       <button id="btnCreateGame" type="button" class="btn btn-primary btn-lg btn-block">
         Challenge a Friend
       </button>
@@ -38,28 +50,36 @@
     </div>
   </script>
 
+  <script id="waitingScreen" type="text/template">
+    <div class="col-md-4 col-md-offset-4">
+      <p>Send your friend the following GameID:</p>
+      <span id="gameId-display"></span>
+      <p>You will be taken to the game once your friend joins</p>
+    </div>
+  </script>
+
   <script id="enterIdScreen" type="text/template">
-    <form class="navbar-form text-center" role="EnterID">
+    <div class="navbar-form text-center" role="EnterID">
       <div class="form-group">
-        <input type="text" class="form-control input-lg" placeholder="EnterID">
+        <input id="inputSubmitId" type="text" class="form-control input-lg" placeholder="EnterID">
       </div>
-      <button type="submit" class="btn btn-success btn-lg">Submit</button>
-    </form>
+      <button id="btnSubmitId" type="submit" class="btn btn-success btn-lg">Race!</button>
+    </div>
   </script>
 
   <script id="mainGameScreen" type="text/template">
     <div class="col-md-6 player-area">
       <div class="pull-left">
-        <h3>Player1</h3>
+        <h3 id="player1Name">Player1</h3>
       </div>
       <div class="pull-right">
         <h3>% Complete</h3>
       </div>
-      <div class="game-text">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean consequat pellentesque feugiat. Curabitur dapibus mauris nisl, sit amet aliquam purus posuere quis. Praesent vestibulum volutpat lorem. Sed vulputate felis at tincidunt vehicula. Suspendisse potenti. Sed dictum odio volutpat felis iaculis, eget condimentum lorem dapibus. Pellentesque ac tincidunt elit. Donec vel aliquam eros. Nam in sem eu eros tincidunt feugiat. Praesent libero diam, mollis nec sollicitudin non, suscipit a nulla.
+      <div id="player1GameText" class="game-text">
+        
       </div>
       <div class="game-text-input">
-        <input type="text" class="form-control input-lg" placeholder="Good luck"> 
+        <input id="playerInput" type="text" class="form-control input-lg" placeholder="Good luck"> 
       </div>
     </div>
     <div class="col-md-6 player-area">
@@ -67,10 +87,10 @@
         <h3>% Complete</h3>
       </div>
       <div class="pull-right">
-        <h3>Player2</h3>
+        <h3 id="player2Name">Player2</h3>
       </div>
-      <div class="game-text">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean consequat pellentesque feugiat. Curabitur dapibus mauris nisl, sit amet aliquam purus posuere quis. Praesent vestibulum volutpat lorem. Sed vulputate felis at tincidunt vehicula. Suspendisse potenti. Sed dictum odio volutpat felis iaculis, eget condimentum lorem dapibus. Pellentesque ac tincidunt elit. Donec vel aliquam eros. Nam in sem eu eros tincidunt feugiat. Praesent libero diam, mollis nec sollicitudin non, suscipit a nulla.
+      <div id="player2GameText" class="game-text">
+        
       </div>
       <div class="game-text-input">
         <input type="text" class="form-control input-lg" placeholder="Good luck"> 

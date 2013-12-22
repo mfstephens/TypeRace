@@ -24,7 +24,13 @@ io.set('log level', 1);
 
 // Listen for Socket.IO Connections. Once connected, start the game logic.
 io.sockets.on('connection', function (socket) {
-    //console.log('client connected');
+	// Let server know when the client disconnects
+    socket.on('disconnect', function () {
+        console.log('Client disconnected');
+    });
+
+	// Let server know a client connected
+    console.log('Client connected');
     battle.initGame(io, socket);
 });
 
