@@ -79,6 +79,11 @@ jQuery(function($){
         myName: 'Anonymous',
 
         /**
+         * Player's role to help distinguish names.
+         */
+        myRole: '',
+
+        /**
          * Variable to keep track of which word 
          * the player is currently attempting to spell.
          */
@@ -168,10 +173,17 @@ jQuery(function($){
          * Display the main game screen where the two players will TypeRace.
          */
         displayMainGameScreen: function(data) {
+            console.log(data);
             App.$displayArea.html(App.$mainGameScreen);
             $(".game-text").html(data.typingTest);
-            // $("#player1Name").text(data.player1Name);
-            // $("#player2Name").text(data.player2Name);
+            if(App.myRole === "host") {
+                $("#player1Name").text(data.hostName);
+                $("#player2Name").text(data.name);
+            }
+            else {
+                $("#player1Name").text(data.name);
+                $("#player2Name").text(data.hostName);
+            }
         },
 
         /* *************************************
@@ -209,14 +221,16 @@ jQuery(function($){
             onPlayerCreatedNewRoom: function(data) {
                 App.gameId = data.gameId;
                 App.mySocketId = data.mySocketId;
+                App.myRole = "host";
                 App.displayWaitingScreen();
             },
 
             onPlayerJoinedRoom: function(data) {
                 if(App.mySocketId === '') {
                     App.mySocketId = data.mySocketId;
+                    App.myRole = "guest";
+                    App.gameId = data.gameId;
                 }
-                App.gameId = data.gameId;
                 App.displayMainGameScreen(data);
                 $('#player1GameText .word-' + App.currentWord).css("background-color", "#dddddd");
             },

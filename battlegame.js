@@ -3,8 +3,8 @@
  */
 var io;
 var gameSocket;
-var player1Name = '';
-var player2Name = '';
+var hostName;
+var guestName;
 
 /**
  * This function is called by index.js to initialize a new game instance.
@@ -28,7 +28,7 @@ exports.initGame = function(sio, socket){
  */
 function joinNewGame(name) {
     // Save player name to the server.
-    player1Name = name;
+    hostName = name;
 
     // Create a unique Socket.IO Room.
     var thisGameId = ( Math.random() * 100000 ) | 0;
@@ -47,7 +47,7 @@ function joinNewGame(name) {
 
 function playerJoinGame(data) {
     // Save a player name to the server.
-    player2Name = data.name;
+    guestName = data.guestName;
 
     // A reference to the player's Socket.IO socket object
     var sock = this;
@@ -66,11 +66,11 @@ function playerJoinGame(data) {
 
         // Join the room
         sock.join(data.gameId);
-        console.log('Player ' + data.mySocketId + ' joining game: ' + room);
+        console.log('Player ' + data.name + ' joining game: ' + room);
 
         // Attach player names to data object.
-        data.player1Name = player1Name;
-        data.player2Name = player2Name;
+        data.hostName = hostName;
+        data.guestName = guestName;
 
         // Emit an event notifying the clients that the player has joined the room.
         io.sockets.in(data.gameId).emit('playerJoinedRoom', data);
