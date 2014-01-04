@@ -99,20 +99,15 @@ jQuery(function($){
         init: function() {
             App.cacheElements();
             App.bindEvents();
-            App.displayHomeScreen();
         },
 
         /**
-         * Cache templates.
+         * Cache main game screen.
          */
         cacheElements: function() {
             // Store game templates in App variables.
             App.$doc = $(document);
-            App.$displayArea = $("#displayArea");
-            App.$homeScreen = $("#homeScreen").html();
-            App.$chooseGameScreen = $("#chooseGameScreen").html();
-            App.$enterIdScreen = $("#enterIdScreen").html();
-            App.$waitingScreen = $("#waitingScreen").html();
+            App.$container = $("#container");
             App.$mainGameScreen = $("#mainGameScreen").html();
         },
 
@@ -140,24 +135,35 @@ jQuery(function($){
          * *********************************** */
 
         /**
-         * Display the "enter name screen" for TypeRace.
-         */
-        displayHomeScreen: function() {
-            App.$displayArea.html(App.$homeScreen);
-        },
-
-        /**
          * Display the "choose game type screen" for TypeRace.
          */
         displayChoosegameScreen: function() {
-            App.$displayArea.html(App.$chooseGameScreen);
+            $("#homeScreen").animate({
+                left: '-50%'
+            }, 500, function() {
+                $(this).css('left', '150%');
+                $(this).appendTo('#container');
+            });
+
+            $("#chooseGameScreen").animate({
+                left: '50%'
+            }, 500);
         },
 
         /**
          * Display the "enter a gameId screen" for TypeRace.
          */
         displayEnterIdScreen: function() {
-            App.$displayArea.html(App.$enterIdScreen);
+            $("#chooseGameScreen").animate({
+                left: '-50%'
+            }, 500, function() {
+                $(this).css('left', '150%');
+                $(this).appendTo('#container');
+            });
+
+            $("#enterIdScreen").animate({
+                left: '50%'
+            }, 500);
         },
 
         /**
@@ -165,16 +171,24 @@ jQuery(function($){
          * host is waiting for a challenger.
          */
         displayWaitingScreen: function() {
-            App.$displayArea.html(App.$waitingScreen);
             $("#gameId-display").text(App.gameId);
+            $("#chooseGameScreen").animate({
+                left: '-50%'
+            }, 500, function() {
+                $(this).css('left', '150%');
+                $(this).appendTo('#container');
+            });
+
+            $("#waitingScreen").animate({
+                left: '50%'
+            }, 500);
         },
 
         /**
          * Display the main game screen where the two players will TypeRace.
          */
         displayMainGameScreen: function(data) {
-            console.log(data);
-            App.$displayArea.html(App.$mainGameScreen);
+            App.$container.html(App.$mainGameScreen);
             $(".game-text").html(data.typingTest);
             if(App.myRole === "host") {
                 $("#player1Name").text(data.hostName);

@@ -6,6 +6,18 @@ h1 {
 	font-size: 100px;
 }
 
+.screen {
+    position: absolute;
+    width: 50%;
+    text-align: center;
+    left: 150%;
+    margin-left: -25%;
+}
+
+#homeScreen {
+	left: 50%;
+}
+
 .player-area {
 	/*border: 1px solid rgb(94, 155, 110);*/
 	background-color: rgba(255, 250, 250, .6);
@@ -17,6 +29,10 @@ h1 {
 	border: 2px solid rgb(94, 155, 110);
 	margin-top: 60px;
 	word-wrap: break-word;
+}
+
+.game-text-input {
+	margin-bottom: 40px;
 }
 
 #gameId-display {
