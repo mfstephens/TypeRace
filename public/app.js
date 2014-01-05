@@ -22,6 +22,9 @@ jQuery(function($){
             IO.socket.on('playerJoinedRoom', IO.onPlayerJoinedRoom);
             IO.socket.on('playerAnsweredCorrectly', IO.onPlayerAnsweredCorrectly);
             IO.socket.on('playerAnsweredIncorrectly', IO.onPlayerAnsweredIncorrectly);
+            IO.socket.on('updateGameCountdown', IO.onUpdateGameCountdown);
+            IO.socket.on('startGame', IO.onStartGame);
+            IO.socket.on('gameOver', IO.onGameOver);
         },
 
         /**
@@ -56,6 +59,18 @@ jQuery(function($){
             // Update the player's current word and replace input field with white space
             data.correct = false;
             App.Player.updateMainGameScreen(data);
+        },
+
+        onUpdateGameCountdown: function(time) {
+            App.updateGameCountdown(time);
+        },
+
+        onStartGame: function() {
+            App.startGame();
+        },
+
+        onGameOver: function(data) {
+            App.endGame(data);
         }
     };
 
@@ -76,7 +91,7 @@ jQuery(function($){
         /**
          * Player's name. Default is Anonymous.
          */
-        myName: 'Anonymous',
+        myName: '',
 
         /**
          * Player's role to help distinguish names.
@@ -198,6 +213,37 @@ jQuery(function($){
                 $("#player1Name").text(data.name);
                 $("#player2Name").text(data.hostName);
             }
+
+            // Tell the server the game is ready.
+            IO.socket.emit("gameScreenReady", App.gameId);
+        },
+
+        updateGameCountdown: function(time) {
+            $("#countdown").html(time);
+        },
+
+        startGame: function() {
+            // Set timer to say Go
+            $("#countdown").html("Go!");
+
+            // Enable player input for the game to begin
+            $("#playerInput").prop('disabled', false);
+
+            // Set timer to say Go
+            $("#playerInput").focus();
+
+            // Highlight the first word in the player text
+            $('#player1GameText .word-' + App.currentWord).css("background-color", "#dddddd");
+        },
+
+        endGame: function(data) {
+            console.log("winnder: " + data.gameWinnerId);
+            if(data.gameWinnerId === App.mySocketId) {
+                $("#container").append('<div id="gameOverScreen">You Win!</div>');
+            }
+            else {
+                $("#container").append('<div id="gameOverScreen">You Lose!</div>');
+            }
         },
 
         /* *************************************
@@ -206,7 +252,13 @@ jQuery(function($){
 
         Player: {
             onPlayerSubmitName: function() {
-                App.myName = $("#inputEnterName").val();
+                var name = $("#inputEnterName").val();
+                if(name === "") {
+                    App.myName = "Anonymous";
+                }
+                else {
+                    App.myName = name;
+                }
                 App.displayChoosegameScreen();
             },
 
@@ -245,8 +297,9 @@ jQuery(function($){
                     App.myRole = "guest";
                     App.gameId = data.gameId;
                 }
+
+                // Show the main game screen
                 App.displayMainGameScreen(data);
-                $('#player1GameText .word-' + App.currentWord).css("background-color", "#dddddd");
             },
 
             onSpacebarPress: function() {
@@ -273,7 +326,6 @@ jQuery(function($){
                 if(data.mySocketId === App.mySocketId) {
                     if(data.correct) {
                         $('#player1GameText .word-' + data.currentWord).css("color", "green");
-
                     }
                     else {
                         $('#player1GameText .word-' + data.currentWord).css("color", "red");

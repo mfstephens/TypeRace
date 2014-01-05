@@ -48,3 +48,8 @@ h1 {
 	display: inline-block;
 	word-wrap: normal;
 }
+
+#gameOverScreen {
+	position: absolute;
+	font-size: 100px;
+}
