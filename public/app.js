@@ -244,10 +244,10 @@ jQuery(function($){
         endGame: function(data) {
             console.log("winnder: " + data.gameWinnerId);
             if(data.gameWinnerId === App.mySocketId) {
-                $("#container").append('<div id="gameOverScreen">You Win!</div>');
+                $("#container").append('<div class="gameOverScreen"><div class="gameOverText"><p>You Win!</p></div></div>');
             }
             else {
-                $("#container").append('<div id="gameOverScreen">You Lose!</div>');
+                $("#container").append('<div class="gameOverScreen"><div class="gameOverText"><p>You Lose!</p></div></div>');
             }
         },
 

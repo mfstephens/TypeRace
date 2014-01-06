@@ -38,7 +38,7 @@ h1 {
 #gameId-display {
 	font-size: 20px;
 	border-radius: 5px;
-	border: 2px solid rgb(94, 155, 110);
+	border: 2px solid #99CC99;
 	padding: 5px;
 }
 
@@ -49,7 +49,17 @@ h1 {
 	word-wrap: normal;
 }
 
-#gameOverScreen {
+.gameOverScreen {
 	position: absolute;
-	font-size: 100px;
+	font-size: 50px;
+	left: 50%;
+}
+
+.gameOverText {
+	position: relative;
+	left: -50%;
+	background-color: rgb(255, 250, 250);
+	border-radius: 5px;
+	border: dotted #993300 2px;
+	padding: 20px;
 }

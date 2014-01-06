@@ -63,14 +63,12 @@ function joinNewGame(name) {
 
 function isRoomAvailable(gameId) {
     for(var i = 0; i < existingGames.length; ++i) {
-        if(existingGames[i].numberOfPlayers >= 2) {
-            return false
-        }
-        else if(existingGames[i].numberOfPlayers < 2) {
+        if(existingGames[i].gameId === gameId && existingGames[i].numberOfPlayers < 2) {
             existingGames[i].numberOfPlayers++;
             return true
         }
     }
+    return false;
 };
 
 function playerJoinGame(data) {
@@ -84,7 +82,7 @@ function playerJoinGame(data) {
     var room = gameSocket.manager.rooms["/" + data.gameId];
 
     // If the room exists and is not full, join the room
-    if( room != undefined && isRoomAvailable(data.gameId)){
+    if( room != undefined || isRoomAvailable(data.gameId)){
         // Attach the socket id to the data object.
         data.mySocketId = sock.id;
 
