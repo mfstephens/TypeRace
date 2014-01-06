@@ -249,6 +249,7 @@ jQuery(function($){
             else {
                 $("#container").append('<div class="gameOverScreen"><div class="gameOverText"><p>You Lose!</p></div></div>');
             }
+            $("#playerInput").prop('disabled', true);
         },
 
         /* *************************************
@@ -318,7 +319,7 @@ jQuery(function($){
                 }
 
                 // Check if player submitted actual text
-                if( data.input != '' ) {
+                if( data.input != ' ' ) {
                     IO.socket.emit('playerSubmittedAnswer', data);
                 }
                 else {
@@ -331,20 +332,18 @@ jQuery(function($){
                 if(data.mySocketId === App.mySocketId) {
                     if(data.correct) {
                         $('#player1GameText .word-' + data.currentWord).css("color", "green");
+                        $('#player1GameText .word-' + App.currentWord).css("background-color", "transparent");
+                        App.currentWord++;
+                        $('#player1GameText .word-' + App.currentWord).css("background-color", "#dddddd");
                     }
                     else {
                         $('#player1GameText .word-' + data.currentWord).css("color", "red");
                     }
-                    $('#player1GameText .word-' + App.currentWord).css("background-color", "transparent");
-                    // Update current word and remove all input in field.
-                    App.currentWord++;
                     $('#playerInput').val('');
-                    $('#player1GameText .word-' + App.currentWord).css("background-color", "#dddddd");
                 }
                 else {
                     if(data.correct) {
                         $('#player2GameText .word-' + data.currentWord).css("color", "green");
-
                     }
                     else {
                         $('#player2GameText .word-' + data.currentWord).css("color", "red");

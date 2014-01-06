@@ -17,7 +17,7 @@
 </head>
 
 <body>
-  <div id="container" class="container">
+  <div id="container">
     <div class="page-header text-center">
       <h1>TypeRace</h1>
       <h3>Assert your dominance on the keyboard.</h3>
@@ -25,7 +25,6 @@
 
     <div id="homeScreen" class="screen">
       <div class="navbar-form" role="EnterID">
-        <h5>Enter your name</h5>
         <div class="form-group">
           <input id="inputEnterName" class="form-control input-lg" placeholder="Enter Name">
         </div>
@@ -58,32 +57,28 @@
   </div>
 
   <script id="mainGameScreen" type="text/template">
-    <div class="page-header text-center">
-      <h1>TypeRace</h1>
-      <h3>Assert your dominance on the keyboard.</h3>
-      <h2 id="countdown">3</h2>
-    </div>
-    <div class="col-md-6 player-area">
-      <div class="pull-left">
-        <h3 id="player1Name">Player1</h3>
+      <div class="page-header text-center">
+        <h1>TypeRace</h1>
+        <h3>Assert your dominance on the keyboard.</h3>
       </div>
-      <div class="pull-right">
-        <h3>% Complete</h3>
+      <div class="game-area">
+        <h1 id="countdown">3</h1>
+        <div class="player-area pull-left">
+          <div class="pull-left">
+            <h3 id="player1Name">Player1</h3>
+          </div>
+          <div id="player1GameText" class="game-text"></div>
+          <div class="game-text-input">
+            <input id="playerInput" type="text" class="form-control input-lg" disabled> 
+          </div>
+        </div>
+        <div class="player-area pull-right">
+          <div class="pull-right">
+            <h3 id="player2Name">Player2</h3>
+          </div>
+          <div id="player2GameText" class="game-text"></div>
+        </div>
       </div>
-      <div id="player1GameText" class="game-text"></div>
-      <div class="game-text-input">
-        <input id="playerInput" type="text" class="form-control input-lg" disabled> 
-      </div>
-    </div>
-    <div class="col-md-6 player-area">
-      <div class="pull-left">
-        <h3>% Complete</h3>
-      </div>
-      <div class="pull-right">
-        <h3 id="player2Name">Player2</h3>
-      </div>
-      <div id="player2GameText" class="game-text"></div>
-    </div>
   </script>
 
   <!-- JavaScript -->
