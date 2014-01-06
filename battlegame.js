@@ -134,7 +134,7 @@ function playerSubmittedAnswer(data) {
         console.log("Correct answer, " + wordPool[data.currentWord] + "===" + data.input);
 
         // Check if player is done.
-        if( data.currentWord === 75 ) {
+        if( data.currentWord >= 74 ) {
             var newData = {
                 gameWinnerId: data.mySocketId,
                 gameWinnerName: data.myName
