@@ -1,10 +1,12 @@
 /*
  * Code for all server logic contained in battlegame.js
  */
-var io;
-var gameSocket;
-var hostName;
-var guestName;
+var io,
+    gameSocket,
+    hostName,
+    guestName;
+
+var existingGames = [];
 
 /**
  * This function is called by index.js to initialize a new game instance.
@@ -12,7 +14,7 @@ var guestName;
  * @param sio The Socket.IO library
  * @param socket The socket object for the connected client.
  */
-exports.initGame = function(sio, socket){
+exports.initGame = function(sio, socket) {
     io = sio;
     gameSocket = socket;
     gameSocket.emit('playerConnected');
@@ -33,6 +35,19 @@ function joinNewGame(name) {
 
     // Create a unique Socket.IO Room.
     var thisGameId = ( Math.random() * 100000 ) | 0;
+    for(var i = 0; i < existingGames.length; ++i) {
+        if(existingGames[i].gameId === thisGameId) {
+            thisGameId = ( Math.random() * 100000 ) | 0;
+            i = 0;
+        }
+    }
+
+    // Add game to existing games
+    existingGames.push({
+        gameId: thisGameId,
+        numberOfPlayers: 1
+    });
+
     console.log('Player ' + name + ' creating room: ' + thisGameId);
 
     // Join the room.
@@ -46,6 +61,18 @@ function joinNewGame(name) {
     });
 };
 
+function isRoomAvailable(gameId) {
+    for(var i = 0; i < existingGames.length; ++i) {
+        if(existingGames[i].numberOfPlayers >= 2) {
+            return false
+        }
+        else if(existingGames[i].numberOfPlayers < 2) {
+            existingGames[i].numberOfPlayers++;
+            return true
+        }
+    }
+};
+
 function playerJoinGame(data) {
     // Save a player name to the server.
     guestName = data.guestName;
@@ -56,8 +83,8 @@ function playerJoinGame(data) {
     // Look up the room ID in the Socket.IO manager object.
     var room = gameSocket.manager.rooms["/" + data.gameId];
 
-    // If the room exists...
-    if( room != undefined ){
+    // If the room exists and is not full, join the room
+    if( room != undefined && isRoomAvailable(data.gameId)){
         // Attach the socket id to the data object.
         data.mySocketId = sock.id;
 
@@ -79,7 +106,7 @@ function playerJoinGame(data) {
     }
     else {
         // Otherwise, send an error message back to the player.
-        this.emit('error', {message: "This room does not exist."});
+        this.emit('error', {message: "This room does not exist or is full."});
     }
 };
 

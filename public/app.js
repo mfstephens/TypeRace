@@ -25,6 +25,7 @@ jQuery(function($){
             IO.socket.on('updateGameCountdown', IO.onUpdateGameCountdown);
             IO.socket.on('startGame', IO.onStartGame);
             IO.socket.on('gameOver', IO.onGameOver);
+            IO.socket.on('error', IO.onError);
         },
 
         /**
@@ -71,6 +72,10 @@ jQuery(function($){
 
         onGameOver: function(data) {
             App.endGame(data);
+        },
+
+        onError: function(message) {
+            alert(message.message);
         }
     };
 
