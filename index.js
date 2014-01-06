@@ -1,8 +1,11 @@
 // Import all modules
 var express = require('express'),
 	path = require('path'),
+    logfmt = require("logfmt");
 	app = express(),
 	battle = require('./battlegame');
+
+app.use(logfmt.requestLogger());
 
 // Create a simple Express application
 app.configure(function() {
@@ -13,8 +16,10 @@ app.configure(function() {
     app.use(express.static(path.join(__dirname,'public')));
 });
 
+var port = process.env.PORT || 8080;
+
 // Create a Node.js based http server on port 8080
-var server = require('http').createServer(app).listen(8080);
+var server = require('http').createServer(app).listen(port);
 
 // Create a Socket.IO server and attach it to the http server
 var io = require('socket.io').listen(server);
